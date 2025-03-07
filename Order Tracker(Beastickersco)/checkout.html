@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Subscribe to BeaStickersCo Order Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .product {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .description h3 {
+            margin: 0;
+            font-size: 22px;
+            color: #007bff;
+        }
+
+        .description h5 {
+            margin: 5px 0;
+            color: #28a745;
+            font-size: 18px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="product">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 14 16" version="1.1">
+                <g fill="#E184DF">
+                    <path d="M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z"/>
+                </g>
+            </svg>
+            <div class="description">
+                <h3>BeaStickersCo Subscription</h3>
+                <h5>$20.00 / month</h5>
+            </div>
+        </div>
+        <form action="/create-checkout-session" method="POST">
+            <!-- Replace with your actual Price Lookup Key from Stripe Dashboard -->
+            <input type="hidden" name="lookup_key" value="bea_ordertracker_monthly_plan" />
+            <button id="checkout-and-portal-button" type="submit">Subscribe Now</button>
+        </form>
+    </section>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Subscribe - BeaStickersCo Order Tracker</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; line-height: 1.6; color: #333; }
+        header, footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 22px;
+            position: relative;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 { text-align: center; color: #007bff; margin-bottom: 15px; }
+        .benefits-list, .faq-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .benefits-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .subscription-card {
+            text-align: center;
+            background: #f0f8ff;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .subscription-card h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #007bff;
+        }
+        .subscription-card p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+        .cta-button:hover { background-color: #218838; }
+        .testimonials, .faq {
+            margin-top: 30px;
+        }
+        .testimonial {
+            background: #f0f8ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        .faq-item {
+            background: #f0f8ff;
+            margin: 8px 0;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .faq-item h3 {
+            margin: 0;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        .back-to-main {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .back-to-main:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+<header>
+    BeaStickersCo Order Tracker - Subscription
+    <a href="advert.html" class="back-to-main">Back to Main</a>
+</header>
+
+<section>
+    <h2>Join BeaStickersCo Order Tracker</h2>
+    <p style="text-align: center;">Access all features for just <strong>$19.99/month</strong> and manage your orders, customers, inventory, and invoices with ease.</p>
+
+    <div class="subscription-card">
+        <h3>All-In-One Subscription</h3>
+        <p>Only $19.99 per month</p>
+        <p>Unlimited Orders, Customers & Products</p>
+        <p>Full Access to Statistics, Inventory, Expenses & Invoice Generator</p>
+        <a href="#" class="cta-button" id="subscribeButton">Subscribe & Create Account</a>
+    </div>
+
+    <h2>Why Choose Us?</h2>
+    <ul class="benefits-list">
+        <li>✔️ Simplified order management</li>
+        <li>✔️ Track all customers & products easily</li>
+        <li>✔️ Generate professional invoices in seconds</li>
+        <li>✔️ Full control over your inventory</li>
+        <li>✔️ See sales trends & top customers</li>
+        <li>✔️ Affordable & no long-term contracts</li>
+    </ul>
+
+    <div class="testimonials">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial">"Order Tracker has made my small business 10x more organized!" – Sarah T.</div>
+        <div class="testimonial">"I love how easy it is to generate invoices for my customers." – Mike R.</div>
+        <div class="testimonial">"The inventory alerts are a lifesaver for my shop!" – Emma B.</div>
+        <div class="testimonial">"It’s so affordable compared to other systems." – Jason K.</div>
+        <div class="testimonial">"The dashboard gives me a clear overview of my whole business." – Kevin D.</div>
+        <div class="testimonial">"I’m able to manage orders from anywhere, even on my phone." – Maria L.</div>
+        <div class="testimonial">"Best tool I’ve found for my sticker business!" – Jamie F.</div>
+    </div>
+
+    <div class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><h3>What features are included? <span>+</span></h3><div class="faq-answer">All features including orders, customers, inventory, expenses, statistics, and invoices.</div></div>
+        <div class="faq-item"><h3>Can I cancel anytime? <span>+</span></h3><div class="faq-answer">Yes, you can cancel anytime directly via Stripe.</div></div>
+        <div class="faq-item"><h3>Is my data secure? <span>+</span></h3><div class="faq-answer">Yes, we use Firebase to store your data securely.</div></div>
+        <div class="faq-item"><h3>Do you offer a free trial? <span>+</span></h3><div class="faq-answer">We offer a 7-day refund policy instead of a free trial.</div></div>
+        <div class="faq-item"><h3>How do I update my payment method? <span>+</span></h3><div class="faq-answer">You can update your payment method directly through Stripe.</div></div>
+        <div class="faq-item"><h3>What happens if I cancel? <span>+</span></h3><div class="faq-answer">Your data is immediately deleted upon cancellation.</div></div>
+        <div class="faq-item"><h3>Can I use this on my phone? <span>+</span></h3><div class="faq-answer">Yes, it works perfectly on desktop, tablet, and mobile.</div></div>
+        <div class="faq-item"><h3>How do I get support? <span>+</span></h3><div class="faq-answer">You can contact us at ordertracker10442@outlook.com.</div></div>
+        <div class="faq-item"><h3>How many orders can I add? <span>+</span></h3><div class="faq-answer">There are no limits on orders, customers, or products.</div></div>
+        <div class="faq-item"><h3>How do I sign up? <span>+</span></h3><div class="faq-answer">Click "Subscribe & Create Account" and follow the instructions.</div></div>
+    </div>
+
+    <h2>Refund Policy</h2>
+    <p>You are eligible for a full refund within 7 days of subscribing if you're not satisfied.</p>
+</section>
+
+<footer>
+    &copy; 2025 BeaStickersCo Order Tracker - Simplify Your Business Management
+    <br>
+    <a href="Terms of Service.html">Terms of Service</a> | <a href="privacy.html">Privacy Policy</a>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const answer = item.querySelector('.faq-answer');
+        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        item.querySelector('span').textContent = answer.style.display === 'block' ? '–' : '+';
+    });
+});
+</script>
+
+</body>
+</html>
