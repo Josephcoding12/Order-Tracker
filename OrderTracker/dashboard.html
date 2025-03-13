@@ -5,92 +5,170 @@
     <script type="module" src="scripts/firebase-config.js"></script>
     <script type="module" src="scripts/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Header */
         header {
-            background-color: #007bff;
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
             padding: 15px;
             text-align: center;
+            font-size: 22px;
             position: relative;
         }
-        nav {
+
+        /* Header Buttons */
+        .header-buttons {
+            position: absolute;
+            top: 15px;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            padding: 0 15px;
+        }
+
+        .header-buttons button {
+            background-color: white;
+            color: #007bff;
+            border: 2px solid #007bff;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .header-buttons button:hover {
             background-color: #007bff;
-            padding: 15px;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 15px;
             color: white;
-            text-decoration: none;
         }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container a {
+            background: linear-gradient(to right, #007bff, #0056b3);
+            color: white;
+            padding: 12px 18px;
+            margin: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-container a:hover {
+            background: linear-gradient(to right, #0056b3, #003b82);
+        }
+
+        /* Main Sections */
         section {
             padding: 20px;
+            max-width: 1200px;
+            margin: auto;
         }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        /* Section Boxes */
+        .section-box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
         }
+
         .card {
             background: white;
-            padding: 15px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
         }
-        .low-stock {
-            color: red;
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
-        canvas {
-            max-width: 300px;
-            margin: 20px auto;
-            display: block;
-        }
+
+        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            background-color: white;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
+
         table th, table td {
-            padding: 10px;
+            padding: 12px;
+            text-align: left;
             border: 1px solid #ddd;
         }
+
         table th {
-            background-color: #007bff;
+            background: #007bff;
             color: white;
         }
-        .logout-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: white;
-            color: #007bff;
-            border: 1px solid #007bff;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 5px;
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
-        .logout-btn:hover {
-            background-color: #f0f0f0;
+
+        /* Charts */
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+            display: block;
         }
+
     </style>
 </head>
 <body>
 
 <header>
+    <div class="header-buttons">
+        <button onclick="window.location.href='account.html'">Account</button>
+        <button onclick="logout()">Logout</button>
+    </div>
     OrderTracker - Business Dashboard
-    <button class="logout-btn" onclick="logout()">Logout</button>
 </header>
 
-<nav>
+<nav class="nav-container">
     <a href="dashboard.html">Dashboard</a>
     <a href="orders.html">Orders</a>
     <a href="customers.html">Customers</a>
@@ -104,20 +182,26 @@
 <section>
     <h2>Quick Business Overview</h2>
     <div class="dashboard-grid">
-        <div class="card">Total Orders: <strong id="totalOrders">0</strong></div>
-        <div class="card">Total Revenue: <strong id="totalRevenue">$0.00</strong></div>
-        <div class="card">Total Profit: <strong id="totalProfit">$0.00</strong></div>
-        <div class="card">Total Expenses: <strong id="totalExpenses">$0.00</strong></div>
-        <div class="card">Net Profit: <strong id="netProfit">$0.00</strong></div>
+        <div class="card">📦 Total Orders: <strong id="totalOrders">0</strong></div>
+        <div class="card">💰 Total Revenue: <strong id="totalRevenue">$0.00</strong></div>
+        <div class="card">📊 Total Profit: <strong id="totalProfit">$0.00</strong></div>
+        <div class="card">💸 Total Expenses: <strong id="totalExpenses">$0.00</strong></div>
+        <div class="card">📈 Net Profit: <strong id="netProfit">$0.00</strong></div>
     </div>
+</section>
 
-    <h3>Orders In Progress</h3>
+<section class="section-box">
+    <h3>📌 Orders In Progress</h3>
     <div id="ordersStarted"></div>
-    <hr>
-    <h3>Low Stock Alerts</h3>
-    <ul id="lowStockList"></ul>
+</section>
 
-    <h3>Recent Orders</h3>
+<section class="section-box">
+    <h3>⚠️ Low Stock Alerts</h3>
+    <ul id="lowStockList"></ul>
+</section>
+
+<section class="section-box">
+    <h3>🛒 Recent Orders</h3>
     <table>
         <thead>
             <tr>
@@ -128,11 +212,13 @@
             </tr>
         </thead>
         <tbody id="recentOrders">
-            <!-- Recent orders will be loaded here -->
+            <!-- Orders will load dynamically -->
         </tbody>
     </table>
+</section>
 
-    <h3>Order Status Overview</h3>
+<section class="section-box">
+    <h3>📊 Order Status Overview</h3>
     <canvas id="orderStatusChart"></canvas>
 </section>
 
