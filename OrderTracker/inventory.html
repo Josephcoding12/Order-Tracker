@@ -4,64 +4,190 @@
     <title>Inventory - OrderTracker</title>
     <script type="module" src="scripts/firebase-config.js"></script>
     <script type="module" src="scripts/inventory.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
-        header, nav {
-            background-color: #007bff;
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
             padding: 15px;
             text-align: center;
+            font-size: 22px;
         }
-        nav a {
-            margin: 0 15px;
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container a {
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
+            padding: 12px 18px;
+            margin: 5px;
+            border-radius: 5px;
             text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
         }
+
+        .nav-container a:hover {
+            background: linear-gradient(to right, #0056b3, #003b82);
+        }
+
+        /* Main Sections */
         section {
             padding: 20px;
+            max-width: 1200px;
+            margin: auto;
         }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        /* Section Boxes */
+        .section-box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styling */
+        .inventory-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .inventory-form input, .inventory-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .inventory-form button {
+            background: linear-gradient(to right, #28a745, #218838);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .inventory-form button:hover {
+            background: linear-gradient(to right, #218838, #1e7e34);
+        }
+
+        /* KPI Overview */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .kpi-card span {
+            display: block;
+            font-size: 24px;
+            color: #007bff;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        canvas {
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        /* Inventory Table */
         table {
             width: 100%;
-            background: white;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
+            background-color: white;
         }
+
         table th, table td {
             padding: 10px;
             border: 1px solid #ddd;
             text-align: left;
         }
+
         table th {
-            background: #007bff;
+            background-color: #007bff;
             color: white;
         }
-        table tr.low-stock {
-            background-color: #ffebee;
-        }
-        input {
-            width: 60px;
-            padding: 5px;
-        }
-        .reason-input {
-            width: 100%;
-        }
-        .btn {
+
+        .edit-btn {
+            background-color: #ffc107;
+            color: white;
+            border: none;
             padding: 5px 10px;
             cursor: pointer;
         }
-        .update-btn { background-color: #28a745; color: white; }
-        .decrease-btn { background-color: #dc3545; color: white; }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<header>OrderTracker - Inventory Management</header>
-<nav>
+<header>
+    OrderTracker - Inventory Management
+</header>
+
+<nav class="nav-container">
     <a href="dashboard.html">Dashboard</a>
     <a href="orders.html">Orders</a>
     <a href="customers.html">Customers</a>
@@ -72,39 +198,61 @@
     <a href="invoice.html">Invoice Generator</a>
 </nav>
 
+<!-- Add Inventory Form at the Top -->
+<section class="section-box">
+    <h2>📦 Add Inventory Item</h2>
+    <form id="inventoryForm" class="inventory-form">
+        <input type="text" id="itemName" placeholder="Item Name" required>
+        <input type="number" id="itemStock" placeholder="Stock Quantity" required>
+        <input type="number" id="itemCost" placeholder="Cost Price ($)" required>
+        <input type="number" id="itemSellPrice" placeholder="Sell Price ($)" required>
+        <input type="text" id="supplier" placeholder="Supplier (Optional)">
+        <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="Raw Materials">Raw Materials</option>
+            <option value="Finished Goods">Finished Goods</option>
+            <option value="Packaging">Packaging</option>
+            <option value="Accessories">Accessories</option>
+        </select>
+        <button type="submit">Add Item</button>
+    </form>
+</section>
 
-<section>
-    <h2>Inventory Levels</h2>
+<!-- KPI Overview Section -->
+<section class="section-box">
+    <h2>📊 Inventory Summary</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">Total Items <span id="totalItems">0</span></div>
+        <div class="kpi-card">Low Stock <span id="lowStockCount">0</span></div>
+        <div class="kpi-card">Total Value <span id="totalValue">$0.00</span></div>
+    </div>
+</section>
+
+<!-- Inventory Category Breakdown -->
+<section class="section-box">
+    <h2>📊 Inventory Breakdown</h2>
+    <div class="chart-container">
+        <canvas id="inventoryChart"></canvas>
+    </div>
+</section>
+
+<!-- Inventory Table -->
+<section class="section-box">
+    <h2>📋 Inventory List</h2>
     <table>
         <thead>
             <tr>
-                <th>Product Name</th>
-                <th>Current Stock</th>
-                <th>Restock Amount</th>
-                <th>Waste/Damage Amount</th>
-                <th>Reason</th>
+                <th>Name</th>
+                <th>Stock</th>
+                <th>Cost Price</th>
+                <th>Sell Price</th>
+                <th>Supplier</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody id="inventoryTable">
-            <!-- Products will load here -->
-        </tbody>
-    </table>
-
-    <h3>Restock & Waste Adjustment History</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Date/Time</th>
-                <th>Product</th>
-                <th>Type</th>
-                <th>Quantity</th>
-                <th>Reason</th>
-                <th>User</th>
-            </tr>
-        </thead>
-        <tbody id="restockLogTable">
-            <!-- Restock log entries will appear here -->
+            <!-- Inventory will be dynamically loaded here -->
         </tbody>
     </table>
 </section>

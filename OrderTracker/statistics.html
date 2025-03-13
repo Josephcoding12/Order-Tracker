@@ -5,54 +5,120 @@
     <script type="module" src="scripts/firebase-config.js"></script>
     <script type="module" src="scripts/statistics.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
-        header, nav {
-            background-color: #007bff;
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
             padding: 15px;
             text-align: center;
+            font-size: 22px;
         }
-        nav a {
-            margin: 0 15px;
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container a {
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
+            padding: 12px 18px;
+            margin: 5px;
+            border-radius: 5px;
             text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
         }
+
+        .nav-container a:hover {
+            background: linear-gradient(to right, #0056b3, #003b82);
+        }
+
+        /* Main Sections */
         section {
             padding: 20px;
+            max-width: 1200px;
+            margin: auto;
         }
-        .stats-box {
-            display: inline-block;
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        /* Section Boxes */
+        .section-box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* KPI Overview */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        .kpi-card {
             background: white;
             padding: 15px;
-            margin: 5px;
-            border: 1px solid #ddd;
-            text-align: center;
-            min-width: 180px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
         }
+
+        .kpi-card span {
+            display: block;
+            font-size: 24px;
+            color: #007bff;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         canvas {
-            max-width: 100%;
-            margin: 20px 0;
-        }
-        select, input {
-            margin: 10px 5px;
-            padding: 5px;
-        }
-        ul {
-            padding-left: 15px;
+            max-width: 500px;
+            margin: 20px;
         }
     </style>
 </head>
 <body>
 
-<header>OrderTracker - Business Statistics Dashboard</header>
-<nav>
+<header>
+    OrderTracker - Business Statistics
+</header>
+
+<nav class="nav-container">
     <a href="dashboard.html">Dashboard</a>
     <a href="orders.html">Orders</a>
     <a href="customers.html">Customers</a>
@@ -63,40 +129,110 @@
     <a href="invoice.html">Invoice Generator</a>
 </nav>
 
-
-<section>
-    <h2>Business Summary</h2>
-    <div class="stats-box">Total Revenue: <strong id="totalRevenue">$0.00</strong></div>
-    <div class="stats-box">Total Cost: <strong id="totalCost">$0.00</strong></div>
-    <div class="stats-box">Total Profit: <strong id="totalProfit">$0.00</strong></div>
-    <div class="stats-box">Total Expenses: <strong id="totalExpenses">$0.00</strong></div>
-    <div class="stats-box">Net Profit: <strong id="netProfit">$0.00</strong></div>
-    <div class="stats-box">Total Orders: <strong id="totalOrders">0</strong></div>
-    <div class="stats-box">Total Customers: <strong id="totalCustomers">0</strong></div>
-
-    <h3>Filter by Date</h3>
-    <select id="dateFilter">
-        <option value="all">All Time</option>
-        <option value="day">Today</option>
-        <option value="week">This Week</option>
-        <option value="month">This Month</option>
-    </select>
-
-    <h3>Most Profitable Products</h3>
-    <ul id="topProducts"></ul>
-
-    <h3>Top Customers</h3>
-    <ul id="topCustomers"></ul>
-
-    <h3>Orders By Status</h3>
-    <canvas id="statusChart"></canvas>
-
-    <h3>Profit Over Time</h3>
-    <canvas id="profitChart"></canvas>
-
-    <h3>Expenses By Category</h3>
-    <canvas id="expensesChart"></canvas>
+<!-- KPI Overview Section -->
+<section class="section-box">
+    <h2>📊 Key Business Metrics</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">Total Sales <span id="totalSales">$0.00</span></div>
+        <div class="kpi-card">Total Orders <span id="totalOrders">0</span></div>
+        <div class="kpi-card">New Customers <span id="newCustomers">0</span></div>
+        <div class="kpi-card">Top Product <span id="topProduct">N/A</span></div>
+    </div>
 </section>
+
+<!-- Sales & Revenue Charts -->
+<section class="section-box">
+    <h2>📈 Sales & Revenue Analysis</h2>
+    <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+        <canvas id="profitChart"></canvas>
+    </div>
+</section>
+
+<!-- Order Trends -->
+<section class="section-box">
+    <h2>📉 Order Trends</h2>
+    <div class="chart-container">
+        <canvas id="ordersChart"></canvas>
+        <canvas id="customerChart"></canvas>
+    </div>
+</section>
+
+<script type="module">
+    import { db } from './scripts/firebase-config.js';
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    // Fetch statistics data
+    async function loadStatistics() {
+        let totalSales = 0;
+        let totalOrders = 0;
+        let newCustomers = 0;
+        let productCount = {};
+
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        ordersSnapshot.forEach((doc) => {
+            let data = doc.data();
+            totalSales += data.sellPrice * data.quantity;
+            totalOrders++;
+
+            if (!productCount[data.product]) {
+                productCount[data.product] = 0;
+            }
+            productCount[data.product] += data.quantity;
+        });
+
+        const customersSnapshot = await getDocs(collection(db, "customers"));
+        newCustomers = customersSnapshot.size;
+
+        // Get the top-selling product
+        let topProduct = "N/A";
+        let maxSold = 0;
+        for (let product in productCount) {
+            if (productCount[product] > maxSold) {
+                maxSold = productCount[product];
+                topProduct = product;
+            }
+        }
+
+        document.getElementById("totalSales").innerText = `$${totalSales.toFixed(2)}`;
+        document.getElementById("totalOrders").innerText = totalOrders;
+        document.getElementById("newCustomers").innerText = newCustomers;
+        document.getElementById("topProduct").innerText = topProduct;
+    }
+
+    // Render Charts
+    function renderCharts() {
+        const ctx1 = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Total Sales ($)',
+                    data: [1200, 1500, 900, 1800, 2200, 1700],
+                    backgroundColor: '#007bff'
+                }]
+            }
+        });
+
+        const ctx2 = document.getElementById('profitChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Net Profit ($)',
+                    data: [500, 700, 400, 900, 1100, 850],
+                    borderColor: '#28a745',
+                    fill: false
+                }]
+            }
+        });
+    }
+
+    loadStatistics();
+    renderCharts();
+</script>
 
 </body>
 </html>

@@ -4,56 +4,89 @@
     <title>Orders - OrderTracker</title>
     <script type="module" src="scripts/firebase-config.js"></script>
     <script type="module" src="scripts/orders.js"></script>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Header & Navigation */
         header {
-            background-color: #007bff;
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
             padding: 15px;
             text-align: center;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 22px;
+            position: relative;
         }
 
-        nav {
-            background-color: #0056b3;
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
             padding: 10px;
-            text-align: center;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        nav a {
+        .nav-container a {
+            background: linear-gradient(to right, #007bff, #0056b3);
             color: white;
-            margin: 0 15px;
+            padding: 12px 18px;
+            margin: 5px;
+            border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
+            transition: 0.3s;
         }
 
-        h1 {
+        .nav-container a:hover {
+            background: linear-gradient(to right, #0056b3, #003b82);
+        }
+
+        /* Main Sections */
+        section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h2 {
             text-align: center;
             color: #007bff;
+            margin-bottom: 20px;
         }
 
-        form {
+        /* Section Boxes */
+        .section-box {
             background: white;
             padding: 20px;
-            max-width: 600px;
-            margin: 20px auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
             border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Order Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 600px;
+            margin: auto;
         }
 
         form input, form select, form button {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 5px 0;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 16px;
         }
 
         form button {
@@ -61,30 +94,32 @@
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
         }
 
         form button:hover {
             background-color: #218838;
         }
 
+        /* Tables */
         table {
-            width: 90%;
-            margin: 20px auto;
+            width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
         }
 
         table th, table td {
-            padding: 10px;
+            padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
         }
 
         table th {
-            background-color: #007bff;
+            background: #007bff;
             color: white;
         }
 
@@ -92,46 +127,28 @@
             background-color: #f9f9f9;
         }
 
-        .btn {
-            padding: 5px 10px;
-            margin: 0 5px;
-            cursor: pointer;
+        /* Filter Box */
+        .filter-box {
+            text-align: center;
+            margin-bottom: 15px;
         }
 
-        .edit-btn {
-            background-color: #ffc107;
-            color: white;
-            border: none;
+        .filter-box select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
         }
 
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-        }
-
-        #customerSelect {
-            width: 80%;
-            display: inline-block;
-        }
-
-        #addCustomerBtn {
-            width: 15%;
-            display: inline-block;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
 
 <header>
-    Order Tracker - Orders Management
+    OrderTracker - Orders Management
 </header>
 
-<nav>
+<nav class="nav-container">
     <a href="dashboard.html">Dashboard</a>
     <a href="orders.html">Orders</a>
     <a href="customers.html">Customers</a>
@@ -142,70 +159,66 @@
     <a href="invoice.html">Invoice Generator</a>
 </nav>
 
-<h1>Manage Orders</h1>
+<section class="section-box">
+    <h2>📌 Create New Order</h2>
+    <form id="orderForm">
+        <select id="fulfiller">
+            <option value="Bea">Bea</option>
+            <option value="Joseph">Joseph</option>
+        </select>
 
-<form id="orderForm">
-    <select id="fulfiller">
-        <option value="Bea">Bea</option>
-        <option value="Joseph">Joseph</option>
-    </select>
-
-    <div>
         <select id="customerSelect" required>
             <option value="">Select Customer</option>
-            <!-- Populated dynamically from Firebase -->
         </select>
-        <button type="button" id="addCustomerBtn">+ Add Customer</button>
-    </div>
 
-    <input type="text" id="customerContact" placeholder="Customer Contact (Auto-filled)" readonly>
-    
-    <select id="productSelect" required>
-        <option value="">Select Product</option>
-        <!-- Populated dynamically from Firebase -->
-    </select>
+        <input type="text" id="customerContact" placeholder="Customer Contact (Auto-filled)" readonly>
+        <select id="productSelect" required>
+            <option value="">Select Product</option>
+        </select>
 
-    <input type="number" id="quantity" placeholder="Quantity" required>
-    <input type="date" id="orderDate" required>
-    
-    <input type="number" id="costPrice" placeholder="Cost Price (Auto-filled)" readonly>
-    <input type="number" id="sellPrice" placeholder="Sell Price (Auto-filled)" readonly>
-    
-    <button type="submit">Add Order</button>
-</form>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <input type="date" id="orderDate" required>
 
-<h2 style="text-align:center;">Orders List</h2>
+        <input type="number" id="costPrice" placeholder="Cost Price (Auto-filled)" readonly>
+        <input type="number" id="sellPrice" placeholder="Sell Price (Auto-filled)" readonly>
 
-<div style="text-align:center; margin-bottom: 10px;">
-    <label for="orderFilter">Filter Orders:</label>
+        <button type="submit">Add Order</button>
+    </form>
+</section>
+
+<section class="section-box filter-box">
+    <h3>🔍 Filter Orders</h3>
     <select id="orderFilter">
         <option value="All">All Orders</option>
         <option value="Not Started">Not Started</option>
         <option value="Started">Started</option>
         <option value="Completed">Completed</option>
     </select>
-</div>
+</section>
 
-<table>
-    <thead>
-        <tr>
-            <th>Fulfiller</th>
-            <th>Customer</th>
-            <th>Contact</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Cost</th>
-            <th>Sell</th>
-            <th>Total</th>
-            <th>Profit</th>
-            <th>Status</th>
-            <th>Options</th>
-        </tr>
-    </thead>
-    <tbody id="ordersTable">
-        <!-- Orders will be dynamically loaded here using orders.js -->
-    </tbody>
-</table>
+<section class="section-box">
+    <h2>🛒 Orders List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fulfiller</th>
+                <th>Customer</th>
+                <th>Contact</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Cost</th>
+                <th>Sell</th>
+                <th>Total</th>
+                <th>Profit</th>
+                <th>Status</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody id="ordersTable">
+            <!-- Orders will be dynamically loaded here -->
+        </tbody>
+    </table>
+</section>
 
 </body>
 </html>
